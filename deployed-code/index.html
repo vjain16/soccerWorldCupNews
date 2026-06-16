@@ -1578,7 +1578,10 @@ const SQUADS = [{
 /* ── UTILS ── */
 
 function dateStr(d) {
-  return d.toISOString().slice(0, 10).replace(/-/g, '');
+  const y = d.getFullYear();
+  const mo = String(d.getMonth() + 1).padStart(2, '0');
+  const dy = String(d.getDate()).padStart(2, '0');
+  return `${y}${mo}${dy}`;
 }
 function parseEvent(ev, dateOffset) {
   const comp = ev.competitions?.[0];
@@ -1742,7 +1745,7 @@ function MatchCenter({
     }) + ' ET';
   };
   const past = matches.filter(m => m.dateOffset < 0 || m.dateOffset === 0 && m.isCompleted);
-  const future = matches.filter(m => m.dateOffset > 0 || m.dateOffset === 0 && m.isScheduled);
+  const future = matches.filter(m => m.dateOffset > 0);
   const live = matches.filter(m => m.isLive);
   const groupByDay = arr => {
     const map = {};
@@ -2230,15 +2233,14 @@ function App() {
     setLoading(true);
     try {
       const today = new Date();
-      const start = new Date('2026-06-11');
-      const end = new Date(today);
-      end.setDate(end.getDate() + 2);
+      const todayLocal = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
-      // Build list of all dates from tournament start to today+2
+      // Build list of all dates from tournament start to today+2, using LOCAL dates
       const dates = [];
-      const cur = new Date(start);
+      const cur = new Date(2026, 5, 11); // June 11 local midnight
+      const end = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 2);
       while (cur <= end) {
-        const offset = Math.round((new Date(cur.toDateString()) - new Date(today.toDateString())) / 86400000);
+        const offset = Math.round((cur - todayLocal) / 86400000);
         dates.push({
           str: dateStr(cur),
           offset
