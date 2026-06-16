@@ -1,6 +1,6 @@
 {
   "name": "FIFA World Cup 2026",
-  "short_name": "WC 2026",
+  "short_name": "FIFA WC 2026",
   "description": "Live scores, standings, bracket and stats for FIFA World Cup 2026",
   "start_url": "/fifa/",
   "scope": "/fifa/",
