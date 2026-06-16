@@ -1,0 +1,25 @@
+{
+  "name": "FIFA World Cup 2026",
+  "short_name": "WC 2026",
+  "description": "Live scores, standings, bracket and stats for FIFA World Cup 2026",
+  "start_url": "/fifa/",
+  "scope": "/fifa/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#1c2a3a",
+  "background_color": "#1c2a3a",
+  "icons": [
+    {
+      "src": "/fifa/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/fifa/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

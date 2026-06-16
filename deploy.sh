@@ -31,6 +31,27 @@ if [ -d "$SRC_DIR/assets" ]; then
     --content-type "application/javascript" --delete
 fi
 
+# Upload icons if they exist
+if [ -d "$SRC_DIR/icons" ]; then
+  echo "Uploading icons..."
+  aws --profile $PROFILE s3 sync "$SRC_DIR/icons/" "s3://$BUCKET/$SITE/icons/" \
+    --content-type "image/png" --delete
+fi
+
+# Upload manifest.json if it exists
+if [ -f "$SRC_DIR/manifest.json" ]; then
+  echo "Uploading manifest.json..."
+  aws --profile $PROFILE s3 cp "$SRC_DIR/manifest.json" \
+    "s3://$BUCKET/$SITE/manifest.json" --content-type "application/manifest+json"
+fi
+
+# Upload service worker if it exists
+if [ -f "$SRC_DIR/sw.js" ]; then
+  echo "Uploading service worker..."
+  aws --profile $PROFILE s3 cp "$SRC_DIR/sw.js" \
+    "s3://$BUCKET/$SITE/sw.js" --content-type "application/javascript"
+fi
+
 # Upload index.html
 echo "Uploading index.html..."
 aws --profile $PROFILE s3 cp "$SRC_DIR/index.html" \

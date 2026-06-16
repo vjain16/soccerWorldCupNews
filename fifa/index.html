@@ -4,6 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FIFA World Cup 2026 — Live Dashboard</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="/fifa/manifest.json">
+  <meta name="theme-color" content="#1c2a3a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="WC 2026">
+  <link rel="apple-touch-icon" href="/fifa/icons/icon-180.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -2641,6 +2650,15 @@ function App() {
   }, "FIFA World Cup 2026\u2122 \xB7 Live data via ESPN \xB7 Last sync: ", lastSync ? lastSync.toISOString().slice(0, 19) + 'Z' : 'pending', " \xB7 ", clock.toUTCString()));
 }
 ReactDOM.createRoot(document.getElementById('root')).render(/*#__PURE__*/React.createElement(App, null));
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/fifa/sw.js')
+      .then(r => console.log('SW registered:', r.scope))
+      .catch(e => console.warn('SW failed:', e));
+  });
+}
 </script>
 </body>
 </html>
