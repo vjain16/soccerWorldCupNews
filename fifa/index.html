@@ -299,6 +299,58 @@
     .footer { text-align: center; padding: 16px; font-size: 11px; color: var(--dim); border-top: 1px solid var(--border); margin-top: 36px; }
 
     @media print { .mc-wrap, .nav, .export-btn, .refresh-btn { display: none; } }
+
+    /* ── MOBILE ── */
+    @media (max-width: 640px) {
+      /* Header */
+      .hdr-top { padding: 10px 14px; flex-wrap: wrap; gap: 8px; }
+      .logo-icon { font-size: 22px; }
+      .logo h1 { font-size: 15px; }
+      .logo p  { font-size: 10px; }
+      .hdr-right { gap: 8px; }
+      .sync-info { display: none; }
+      .live-badge { font-size: 10px; padding: 3px 8px; }
+      .refresh-btn { font-size: 10px; padding: 4px 10px; }
+
+      /* Nav */
+      .nav { padding: 0 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; }
+      .nav-tab { padding: 10px 12px; font-size: 11px; white-space: nowrap; }
+      .export-btn { display: none; }
+
+      /* Match center */
+      .mc-wrap { margin: 12px 10px; }
+      .mc-grid { grid-template-columns: 1fr; }
+      .mc-divider { display: none; }
+      .mc-col { padding: 12px 14px; }
+      .mc-col:last-child { border-top: 1px solid var(--border); }
+      .mc-name { max-width: 60px; }
+
+      /* Today strip */
+      .mc-today-strip { padding: 10px 14px; }
+      .mc-today-mid { min-width: 74px; }
+      .mc-flag { font-size: 15px; }
+      .mc-score { font-size: 13px; }
+      .mc-time  { font-size: 11px; }
+      .mc-score-box { min-width: 52px; padding: 3px 6px; }
+
+      /* Match row – tighten up */
+      .mc-match { gap: 5px; }
+      .mc-grp { min-width: 26px; font-size: 8px; }
+
+      /* Page content */
+      .page { padding: 16px 12px; }
+      .page-hdr { flex-direction: column; gap: 8px; }
+      .page-hdr h2 { font-size: 15px; }
+
+      /* Groups */
+      .groups-grid { grid-template-columns: 1fr; gap: 10px; }
+
+      /* Fixtures */
+      .fx-wrap { padding: 0; }
+
+      /* Squads */
+      .sq-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
