@@ -227,9 +227,15 @@
     .t-flag  { font-size: 14px; line-height: 1; }
     .t-code  { font-size: 10px; font-weight: 700; color: var(--blue); letter-spacing: .5px; min-width: 28px; }
     .t-name  { font-size: 12px; font-weight: 500; color: var(--text); }
-    .pts-col { font-weight: 700; font-size: 13px; color: var(--text); }
+    .pts-col {
+      font-weight: 800; font-size: 13px; color: #fff;
+      background: rgba(56,189,248,.15); border: 1px solid rgba(56,189,248,.25);
+      border-radius: 5px; padding: 2px 8px; display: inline-block;
+    }
     .g-tbl tbody tr.qrow .t-name  { color: #fff; }
-    .g-tbl tbody tr.qrow .pts-col { color: var(--green); }
+    .g-tbl tbody tr.qrow .pts-col {
+      background: rgba(34,197,94,.18); border-color: rgba(34,197,94,.35); color: var(--green);
+    }
 
     .g-foot {
       padding: 7px 12px; border-top: 1px solid var(--border);
@@ -263,17 +269,51 @@
     .fix-clock { font-size: 10px; color: var(--red); font-weight: 600; margin-top: 2px; }
 
     /* ── BRACKET ── */
-    .bkt-wrap { background: var(--surf); border: 1px solid var(--border); border-radius: 12px; padding: 56px 40px; text-align: center; }
-    .bkt-icon { font-size: 52px; margin-bottom: 16px; }
-    .bkt-wrap h3 { font-size: 19px; font-weight: 700; color: #fff; margin-bottom: 7px; }
-    .bkt-wrap p  { font-size: 13px; color: var(--muted); max-width: 360px; margin: 0 auto 28px; }
-    .bkt-stages  { display: flex; justify-content: center; }
-    .bkt-stage   { display: flex; flex-direction: column; align-items: center; padding: 13px 20px; border: 1px solid var(--border); border-right: none; background: rgba(255,255,255,.02); }
-    .bkt-stage:first-child { border-radius: 8px 0 0 8px; }
-    .bkt-stage:last-child  { border-right: 1px solid var(--border); border-radius: 0 8px 8px 0; }
-    .bkt-lbl  { font-size: 9px; color: var(--dim); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
-    .bkt-num  { font-size: 24px; font-weight: 700; color: var(--muted); margin-top: 3px; }
-    .bkt-sub  { font-size: 10px; color: var(--dim); margin-top: 2px; }
+    /* ── BRACKET ── */
+    .bkt-outer { overflow-x: auto; padding-bottom: 12px; }
+    .bkt-tree  { display: flex; align-items: flex-start; gap: 0; padding: 8px 4px; min-width: max-content; }
+    .bkt-col   { display: flex; flex-direction: column; min-width: 148px; }
+    .bkt-col-hdr { font-size: 9px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; text-align: center; padding: 4px 8px 10px; }
+    .bkt-col-hdr span { display: block; color: var(--dim); font-weight: 400; font-size: 9px; margin-top: 1px; letter-spacing: 0; text-transform: none; }
+    .bkt-col-final .bkt-col-hdr { color: var(--amber); }
+
+    /* Slot: wraps one match, grows to align with pairs */
+    .bkt-slot { display: flex; flex-direction: column; justify-content: center; position: relative; }
+
+    /* Bracket connector lines using borders on odd/even slots */
+    .bkt-slot.top    { border-right: 1px solid rgba(255,255,255,.13); border-bottom-right-radius: 5px; }
+    .bkt-slot.bottom { border-right: 1px solid rgba(255,255,255,.13); border-top-right-radius: 5px; }
+    /* Horizontal line from bracket corner to next column */
+    .bkt-slot.top::after, .bkt-slot.bottom::after {
+      content: ''; position: absolute; right: -16px; top: 50%; width: 16px; height: 1px;
+      background: rgba(255,255,255,.13);
+    }
+    .bkt-slot.top::after    { top: 100%; }
+    .bkt-slot.bottom::after { top: 0; }
+    /* For Final column - no outgoing lines */
+    .bkt-col-final .bkt-slot::after { display: none; }
+    .bkt-col-final .bkt-slot { border: none; }
+
+    /* Match card */
+    .bkt-card { margin: 5px 10px; border-radius: 7px; overflow: hidden; background: var(--surf); border: 1px solid var(--border); }
+    .bkt-card.live { border-color: rgba(239,68,68,.4); }
+    .bkt-card.final-card { border-color: rgba(245,158,11,.35); background: rgba(245,158,11,.05); }
+    .bkt-team-row { display: flex; align-items: center; gap: 6px; padding: 6px 8px; font-size: 11px; position: relative; }
+    .bkt-team-row + .bkt-team-row { border-top: 1px solid rgba(255,255,255,.06); }
+    .bkt-team-row.winner { background: rgba(34,197,94,.1); }
+    .bkt-team-row.tbd   { color: var(--dim); font-style: italic; }
+    .bkt-t-flag { font-size: 14px; line-height: 1; flex-shrink: 0; }
+    .bkt-t-code { font-size: 10px; font-weight: 700; flex: 1; }
+    .bkt-t-score { font-size: 11px; font-weight: 800; color: #fff; margin-left: auto; }
+    .bkt-t-score.win { color: var(--green); }
+    .bkt-match-date { font-size: 9px; color: var(--dim); text-align: center; padding: 2px 8px 4px; }
+
+    /* 3rd place */
+    .bkt-third { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .bkt-third-lbl { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 10px; }
+    .bkt-loading { color: var(--muted); font-size: 13px; font-style: italic; padding: 40px 0; text-align: center; }
+
+    @media (max-width: 640px) { .bkt-col { min-width: 120px; } .bkt-card { margin: 4px 6px; } }
 
     /* ── SQUADS ── */
     .sq-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 13px; }
@@ -1690,7 +1730,8 @@ function parseEvent(ev, dateOffset) {
     isScheduled: !isCompleted && !isLive,
     group,
     clock: comp.status?.displayClock,
-    statusName: sName
+    statusName: sName,
+    venue: comp.venue?.address?.city || comp.venue?.fullName || null
   };
 }
 function computeGroups(completedMatches) {
@@ -2106,7 +2147,7 @@ function Groups({
     className: "host-chip"
   }, "HOST")), /*#__PURE__*/React.createElement("table", {
     className: "g-tbl"
-  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Team"), /*#__PURE__*/React.createElement("th", null, "MP"), /*#__PURE__*/React.createElement("th", null, "W"), /*#__PURE__*/React.createElement("th", null, "D"), /*#__PURE__*/React.createElement("th", null, "L"), /*#__PURE__*/React.createElement("th", null, "GF"), /*#__PURE__*/React.createElement("th", null, "GA"), /*#__PURE__*/React.createElement("th", null, "Pts"))), /*#__PURE__*/React.createElement("tbody", null, g.teams.map(t => /*#__PURE__*/React.createElement("tr", {
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Team"), /*#__PURE__*/React.createElement("th", null, "MP"), /*#__PURE__*/React.createElement("th", null, "W"), /*#__PURE__*/React.createElement("th", null, "D"), /*#__PURE__*/React.createElement("th", null, "L"), /*#__PURE__*/React.createElement("th", null, "GF"), /*#__PURE__*/React.createElement("th", null, "GA"), /*#__PURE__*/React.createElement("th", {style:{color:"var(--blue)",fontWeight:800}}, "Pts"))), /*#__PURE__*/React.createElement("tbody", null, g.teams.map(t => /*#__PURE__*/React.createElement("tr", {
     key: t.code,
     className: t.adv ? 'qrow' : ''
   }, /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("div", {
@@ -2225,46 +2266,147 @@ function Fixtures({
   }, m.aName)))))));
 }
 function Bracket() {
-  const stages = [{
-    l: 'Round of 32',
-    n: 32,
-    s: '32 teams'
-  }, {
-    l: 'Round of 16',
-    n: 16,
-    s: '16 teams'
-  }, {
-    l: 'Quarter-Final',
-    n: 8,
-    s: '8 teams'
-  }, {
-    l: 'Semi-Final',
-    n: 4,
-    s: '4 teams'
-  }, {
-    l: 'Final',
-    n: 1,
-    s: '2 teams'
-  }];
-  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-    className: "page-hdr"
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, "Knockout Bracket"), /*#__PURE__*/React.createElement("p", null, "Group Stage concludes July 2 \xB7 Knockouts begin July 4"))), /*#__PURE__*/React.createElement("div", {
-    className: "bkt-wrap"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "bkt-icon"
-  }, "\uD83C\uDFC6"), /*#__PURE__*/React.createElement("h3", null, "Knockout Stage \xB7 Starting July 4, 2026"), /*#__PURE__*/React.createElement("p", null, "The Round of 32 begins July 4. All 32 spots confirmed once the group stage ends on July 2."), /*#__PURE__*/React.createElement("div", {
-    className: "bkt-stages"
-  }, stages.map((s, i) => /*#__PURE__*/React.createElement("div", {
-    key: i,
-    className: "bkt-stage"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "bkt-lbl"
-  }, s.l), /*#__PURE__*/React.createElement("div", {
-    className: "bkt-num"
-  }, s.n), /*#__PURE__*/React.createElement("div", {
-    className: "bkt-sub"
-  }, s.s))))));
+  const {useState, useEffect} = React;
+  const [kMatches, setKMatches] = useState([]);
+  const [kLoading, setKLoading] = useState(true);
+
+  useEffect(() => {
+    const dates = [];
+    for (let d = 1; d <= 19; d++) dates.push('202607' + String(d).padStart(2, '0'));
+    Promise.all(dates.map(date =>
+      fetch('https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=' + date)
+        .then(r => r.json()).catch(() => null)
+    )).then(responses => {
+      const KT = [13801, 13800, 13799, 13798, 13797, 13803];
+      const matches = [];
+      responses.forEach(data => {
+        (data?.events || []).forEach(ev => {
+          const stype = ev.season?.type;
+          if (!KT.includes(stype)) return;
+          const comp = ev.competitions?.[0];
+          if (!comp) return;
+          const h = comp.competitors?.find(c => c.homeAway === 'home');
+          const a = comp.competitors?.find(c => c.homeAway === 'away');
+          const st = comp.status?.type || {};
+          const isCompleted = st.completed === true || st.state === 'post';
+          const isLive = st.state === 'in';
+          const hCode = toCode(h?.team?.abbreviation, h?.team?.displayName);
+          const aCode = toCode(a?.team?.abbreviation, a?.team?.displayName);
+          const isTbd = code => !FLAGS[code];
+          matches.push({
+            id: ev.id, date: ev.date, roundType: stype,
+            hCode, hName: h?.team?.displayName || '?', hScore: h?.score || '',
+            aCode, aName: a?.team?.displayName || '?', aScore: a?.score || '',
+            isCompleted, isLive, hTbd: isTbd(hCode), aTbd: isTbd(aCode)
+          });
+        });
+      });
+      matches.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+      setKMatches(matches);
+      setKLoading(false);
+    });
+  }, []);
+
+  const fmtD = iso => { try { return new Date(iso).toLocaleDateString('en-US', {month:'short',day:'numeric'}); } catch(e) { return ''; }};
+
+  const TeamRow = ({code, name, score, isTbd, isWinner, isCompleted}) =>
+    React.createElement('div', {className: 'bkt-team-row' + (isTbd?' tbd':'') + (isWinner?' winner':'')},
+      React.createElement('span', {className: 'bkt-t-flag'}, isTbd ? '❓' : (FLAGS[code] || '🏳')),
+      React.createElement('span', {className: 'bkt-t-code'}, isTbd ? (name.length > 12 ? name.slice(0,12)+'…' : name) : code),
+      isCompleted && React.createElement('span', {className: 'bkt-t-score' + (isWinner?' win':'')}, score)
+    );
+
+  const MatchCard = ({m, isFinal}) => {
+    const hWin = m.isCompleted && parseInt(m.hScore) > parseInt(m.aScore);
+    const aWin = m.isCompleted && parseInt(m.aScore) > parseInt(m.hScore);
+    return React.createElement('div', {className: 'bkt-card' + (m.isLive?' live':'') + (isFinal?' final-card':'')},
+      React.createElement(TeamRow, {code:m.hCode, name:m.hName, score:m.hScore, isTbd:m.hTbd, isWinner:hWin, isCompleted:m.isCompleted}),
+      React.createElement(TeamRow, {code:m.aCode, name:m.aName, score:m.aScore, isTbd:m.aTbd, isWinner:aWin, isCompleted:m.isCompleted}),
+      m.isLive && React.createElement('div', {className: 'bkt-match-date', style:{color:'var(--red)'}}, '● Live'),
+      !m.isLive && m.date && React.createElement('div', {className: 'bkt-match-date'}, fmtD(m.date))
+    );
+  };
+
+  const RoundCol = ({label, dates, matches, totalSlots, isFinal}) => {
+    // Fill to totalSlots with TBD placeholders
+    const filled = [...matches];
+    while (filled.length < totalSlots) filled.push(null);
+    const slotH = isFinal ? null : Math.floor(640 / totalSlots);
+
+    // Group into pairs for bracket lines
+    const pairs = [];
+    for (let i = 0; i < filled.length; i += 2) {
+      pairs.push([filled[i], filled[i+1]]);
+    }
+
+    return React.createElement('div', {className: 'bkt-col' + (isFinal?' bkt-col-final':'')},
+      React.createElement('div', {className: 'bkt-col-hdr'}, label, React.createElement('span', null, dates)),
+      React.createElement('div', {style:{display:'flex',flexDirection:'column',height: isFinal?'auto':'640px'}},
+        isFinal
+          ? (filled[0] ? React.createElement(MatchCard, {key:0, m:filled[0], isFinal:true}) :
+              React.createElement('div', {className:'bkt-card',style:{margin:'5px 10px',padding:'16px',textAlign:'center',color:'var(--dim)',fontSize:11}}, 'TBD'))
+          : pairs.map((pair, pi) =>
+              React.createElement(React.Fragment, {key:pi},
+                React.createElement('div', {className:'bkt-slot top', style:{flex:1}},
+                  pair[0]
+                    ? React.createElement(MatchCard, {m:pair[0]})
+                    : React.createElement('div',{className:'bkt-card',style:{margin:'5px 10px',padding:'10px 8px'}},
+                        React.createElement('div',{className:'bkt-team-row tbd'},React.createElement('span',{className:'bkt-t-flag'},'❓'),React.createElement('span',{className:'bkt-t-code'},'TBD')),
+                        React.createElement('div',{className:'bkt-team-row tbd'},React.createElement('span',{className:'bkt-t-flag'},'❓'),React.createElement('span',{className:'bkt-t-code'},'TBD'))
+                      )
+                ),
+                React.createElement('div', {className:'bkt-slot bottom', style:{flex:1}},
+                  pair[1]
+                    ? React.createElement(MatchCard, {m:pair[1]})
+                    : React.createElement('div',{className:'bkt-card',style:{margin:'5px 10px',padding:'10px 8px'}},
+                        React.createElement('div',{className:'bkt-team-row tbd'},React.createElement('span',{className:'bkt-t-flag'},'❓'),React.createElement('span',{className:'bkt-t-code'},'TBD')),
+                        React.createElement('div',{className:'bkt-team-row tbd'},React.createElement('span',{className:'bkt-t-flag'},'❓'),React.createElement('span',{className:'bkt-t-code'},'TBD'))
+                      )
+                )
+              )
+            )
+      )
+    );
+  };
+
+  if (kLoading) return React.createElement('div', {className: 'bkt-loading'}, 'Loading bracket…');
+
+  const r32 = kMatches.filter(m => m.roundType === 13800 || m.roundType === 13801);
+  const r16 = kMatches.filter(m => m.roundType === 13799);
+  const qf  = kMatches.filter(m => m.roundType === 13798);
+  const fin = kMatches.filter(m => m.roundType === 13803);
+  const thd = kMatches.filter(m => m.roundType === 13797);
+
+  // Determine SF slots (not yet in ESPN - show 2 TBDs)
+  const sf = [];
+
+  return React.createElement('div', null,
+    React.createElement('div', {className:'page-hdr'},
+      React.createElement('div', null,
+        React.createElement('h2', null, '🏆 Knockout Bracket'),
+        React.createElement('p', null, 'Group Stage ends Jul 2 \xB7 Knockouts begin Jul 4 \xB7 Updates live from ESPN')
+      )
+    ),
+    React.createElement('p', {style:{fontSize:12,color:'var(--muted)',marginBottom:16}},
+      'Teams fill in as matches are decided. ❓ = slot not yet determined.'
+    ),
+    React.createElement('div', {className:'bkt-outer'},
+      React.createElement('div', {className:'bkt-tree'},
+        React.createElement(RoundCol, {label:'Round of 32', dates:'Jul 1–7', matches:r32, totalSlots:16}),
+        React.createElement(RoundCol, {label:'Round of 16', dates:'Jul 9–11', matches:r16, totalSlots:8}),
+        React.createElement(RoundCol, {label:'Quarter-Final', dates:'Jul 13–15', matches:qf, totalSlots:4}),
+        React.createElement(RoundCol, {label:'Semi-Final', dates:'Jul 16–17', matches:sf, totalSlots:2}),
+        React.createElement(RoundCol, {label:'🏆 Final', dates:'Jul 19', matches:fin, totalSlots:1, isFinal:true})
+      )
+    ),
+    thd.length > 0 && React.createElement('div', {className:'bkt-third'},
+      React.createElement('div', {className:'bkt-third-lbl'}, '🥉 3rd Place Play-off \xB7 Jul 18'),
+      React.createElement(MatchCard, {m:thd[0]})
+    )
+  );
 }
+
+
 function Squads() {
   return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     className: "page-hdr"
