@@ -298,6 +298,33 @@
     /* ── FOOTER ── */
     .footer { text-align: center; padding: 16px; font-size: 11px; color: var(--dim); border-top: 1px solid var(--border); margin-top: 36px; }
 
+    /* ── GOLDEN BOOT ── */
+    .gb-list { display: flex; flex-direction: column; gap: 10px; max-width: 600px; }
+    .gb-row {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 18px; border-radius: 10px;
+      background: var(--surf); border: 1px solid var(--border);
+      transition: border-color .15s;
+    }
+    .gb-row:hover { border-color: var(--border2); }
+    .gb-row-1 { border-color: rgba(251,191,36,.4); background: rgba(251,191,36,.06); }
+    .gb-row-2 { border-color: rgba(156,163,175,.35); background: rgba(156,163,175,.05); }
+    .gb-row-3 { border-color: rgba(180,120,80,.35); background: rgba(180,120,80,.05); }
+    .gb-rank { font-size: 20px; width: 32px; text-align: center; flex-shrink: 0; }
+    .gb-flag-img { width: 36px; height: 24px; object-fit: cover; border-radius: 3px; flex-shrink: 0; }
+    .gb-info { flex: 1; min-width: 0; }
+    .gb-name { display: block; font-size: 15px; font-weight: 700; color: #fff; }
+    .gb-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .gb-goals-box { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+    .gb-goal-num { font-size: 26px; font-weight: 800; color: var(--amber); line-height: 1; }
+    .gb-goal-lbl { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: .6px; }
+    .gb-loading { color: var(--muted); font-size: 13px; font-style: italic; padding: 24px 0; }
+    @media (max-width: 640px) {
+      .gb-row { padding: 11px 14px; gap: 10px; }
+      .gb-goal-num { font-size: 22px; }
+      .gb-name { font-size: 13px; }
+    }
+
     @media print { .mc-wrap, .nav, .export-btn, .refresh-btn { display: none; } }
 
     /* ── MOBILE ── */
@@ -2268,6 +2295,42 @@ function Squads() {
   }, p.nm))))))));
 }
 
+/* ── GOLDEN BOOT ── */
+
+function GoldenBoot({ scorers }) {
+  const medals = ['🥇', '🥈', '🥉'];
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "page-hdr"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, "🥇 Top Goal Scorer"), /*#__PURE__*/React.createElement("p", null, "FIFA World Cup 2026 \xB7 Live from ESPN"))), /*#__PURE__*/React.createElement("p", {
+    style: {color: 'var(--muted)', fontSize: '13px', marginBottom: '20px', lineHeight: '1.6'}
+  }, "Below are the players who are currently leading the goal scoring charts and are expected to win the 🥅 Golden Boot award at FIFA World Cup 2026."), scorers.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    className: "gb-loading"
+  }, "Loading scorers…") : /*#__PURE__*/React.createElement("div", {
+    className: "gb-list"
+  }, scorers.map((s, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: `gb-row gb-row-${i + 1}`
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "gb-rank"
+  }, i < 3 ? medals[i] : `#${i + 1}`), /*#__PURE__*/React.createElement("img", {
+    className: "gb-flag-img",
+    src: s.flag,
+    alt: s.country
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "gb-info"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "gb-name"
+  }, s.name), /*#__PURE__*/React.createElement("span", {
+    className: "gb-meta"
+  }, s.position, " \xB7 ", s.country)), /*#__PURE__*/React.createElement("div", {
+    className: "gb-goals-box"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "gb-goal-num"
+  }, s.goals), /*#__PURE__*/React.createElement("span", {
+    className: "gb-goal-lbl"
+  }, s.goals === 1 ? "goal" : "goals"))))));
+}
+
 /* ── APP ── */
 
 function App() {
@@ -2275,6 +2338,7 @@ function App() {
   const [groups, setGroups] = useState(computeGroups([]));
   const [loading, setLoading] = useState(true);
   const [lastSync, setLastSync] = useState(null);
+  const [scorers, setScorers] = useState([]);
   const [tab, setTab] = useState('GROUPS');
   const [clock, setClock] = useState(new Date());
   useEffect(() => {
@@ -2335,6 +2399,26 @@ function App() {
     fetchLiveData();
   }, [fetchLiveData]);
 
+  useEffect(() => {
+    const LEADERS = 'https://sports.core.api.espn.com/v2/sports/soccer/leagues/fifa.world/seasons/2026/types/1/leaders';
+    fetch(LEADERS).then(r => r.json()).then(async data => {
+      const cats = data.categories || [];
+      const goalsCat = cats.find(c => c.name === 'goals');
+      if (!goalsCat) return;
+      const top = (goalsCat.leaders || []).slice(0, 10);
+      const results = await Promise.all(top.map(l =>
+        fetch(l.athlete['$ref']).then(r => r.json()).then(a => ({
+          name: a.fullName || a.displayName,
+          position: a.position?.displayName || '',
+          country: a.citizenshipCountry?.displayName || a.citizenship || '',
+          flag: a.flag?.href || '',
+          goals: Math.round(l.value)
+        })).catch(() => null)
+      ));
+      setScorers(results.filter(Boolean));
+    }).catch(() => {});
+  }, []);
+
   // Top block: only matches within ±2 days of today
   const blockMatches = allMatches.filter(m => m.dateOffset >= -2 && m.dateOffset <= 2);
   const TABS = [{
@@ -2349,6 +2433,9 @@ function App() {
   }, {
     id: 'SQUADS',
     label: 'Squads'
+  }, {
+    id: 'GOLDEN_BOOT',
+    label: 'Top Scorer'
   }];
   return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     className: "hdr"
@@ -2407,7 +2494,7 @@ function App() {
     groups: groups
   }), tab === 'FIXTURES' && /*#__PURE__*/React.createElement(Fixtures, {
     matches: allMatches
-  }), tab === 'BRACKET' && /*#__PURE__*/React.createElement(Bracket, null), tab === 'SQUADS' && /*#__PURE__*/React.createElement(Squads, null)), /*#__PURE__*/React.createElement("div", {
+  }), tab === 'BRACKET' && /*#__PURE__*/React.createElement(Bracket, null), tab === 'SQUADS' && /*#__PURE__*/React.createElement(Squads, null), tab === 'GOLDEN_BOOT' && /*#__PURE__*/React.createElement(GoldenBoot, {scorers: scorers})), /*#__PURE__*/React.createElement("div", {
     className: "footer"
   }, "FIFA World Cup 2026\u2122 \xB7 Live data via ESPN \xB7 Last sync: ", lastSync ? lastSync.toISOString().slice(0, 19) + 'Z' : 'pending', " \xB7 ", clock.toUTCString()));
 }
