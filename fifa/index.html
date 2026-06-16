@@ -2558,7 +2558,7 @@ function App() {
       if (!goalsCat) return;
       const top = (goalsCat.leaders || []).slice(0, 10);
       const results = await Promise.all(top.map(l =>
-        fetch(l.athlete['$ref']).then(r => r.json()).then(a => ({
+        fetch(l.athlete['$ref'].replace('http://', 'https://')).then(r => r.json()).then(a => ({
           name: a.fullName || a.displayName,
           position: a.position?.displayName || '',
           country: a.citizenshipCountry?.displayName || a.citizenship || '',
