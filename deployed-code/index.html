@@ -1591,8 +1591,8 @@ function parseEvent(ev, dateOffset) {
   if (!home || !away) return null;
   const statusType = comp.status?.type || ev.status?.type || {};
   const sName = statusType.name || '';
-  const isCompleted = statusType.completed === true || ['STATUS_FINAL', 'STATUS_FULL_TIME', 'STATUS_FT'].includes(sName);
-  const isLive = ['STATUS_IN_PROGRESS', 'STATUS_HALFTIME', 'STATUS_SECOND_HALF', 'STATUS_FIRST_HALF'].includes(sName);
+  const isCompleted = statusType.completed === true || statusType.state === 'post' || ['STATUS_FINAL', 'STATUS_FULL_TIME', 'STATUS_FT'].includes(sName);
+  const isLive = statusType.state === 'in' || ['STATUS_IN_PROGRESS', 'STATUS_HALFTIME', 'STATUS_SECOND_HALF', 'STATUS_FIRST_HALF', 'STATUS_EXTRA_TIME', 'STATUS_PENALTY'].includes(sName);
   const hCode = toCode(home.team?.abbreviation, home.team?.displayName);
   const aCode = toCode(away.team?.abbreviation, away.team?.displayName);
   const group = TEAM_GROUP[hCode] || TEAM_GROUP[aCode] || (comp.notes || []).find(n => /Group [A-L]/i.test(n.headline || ''))?.headline?.match(/([A-L])/)?.[1] || '?';
