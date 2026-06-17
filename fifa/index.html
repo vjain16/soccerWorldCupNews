@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FIFA World Cup 2026 — Live Dashboard</title>
 
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H7Z2RR63VQ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-H7Z2RR63VQ');
+  </script>
+
   <!-- PWA -->
   <link rel="manifest" href="/fifa/manifest.json">
   <meta name="theme-color" content="#1c2a3a">
@@ -150,18 +159,34 @@
     .mc-name { font-size: 10px; color: var(--muted); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80px; }
     .mc-venue { font-size: 10px; color: var(--dim); padding: 0 0 5px; text-align: center; }
 
-    /* Today strip */
-    .mc-today-strip { border-bottom: 2px solid var(--border); padding: 12px 18px; background: rgba(180,83,9,.04); }
-    .mc-today-strip-title { font-size: 11px; font-weight: 700; color: var(--amber); text-transform: uppercase; letter-spacing: .6px; display: block; margin-bottom: 8px; }
-    .mc-today-row { display: flex; align-items: center; gap: 8px; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.05); }
-    .mc-today-row:last-child { border-bottom: none; padding-bottom: 0; }
-    .mc-today-team-cell { display: flex; align-items: center; gap: 6px; flex: 1; min-width: 0; }
-    .mc-today-team-cell.r { flex-direction: row-reverse; }
-    .mc-today-mid { display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 90px; flex-shrink: 0; }
-    .mc-today-ft  { font-size: 10px; color: var(--muted); }
-    .mc-today-ko  { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; }
-    .mc-today-venue { font-size: 10px; color: var(--dim); }
-    .live-pill { display: inline-flex; align-items: center; padding: 2px 7px; border-radius: 20px; font-size: 9px; font-weight: 800; background: rgba(239,68,68,.2); border: 1px solid rgba(239,68,68,.4); color: var(--red); letter-spacing: .5px; text-transform: uppercase; animation: livepulse 1.4s ease-in-out infinite; }
+    /* Today match boxes */
+    .tc-section { border-bottom: 2px solid var(--border); padding: 10px 16px 12px; background: rgba(245,158,11,.04); }
+    .tc-header { display:flex; align-items:center; gap:6px; margin-bottom:8px; }
+    .tc-header-label { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px; background:linear-gradient(90deg,#f59e0b,#ef4444); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .tc-header-date { margin-left:auto; font-size:10px; color:var(--muted); }
+    .tc-cards { display:flex; flex-wrap:wrap; gap:8px; }
+    .tc-card { border-radius:10px; border:1px solid var(--border); background:rgba(255,255,255,.03); overflow:hidden; min-width:160px; flex:1; }
+    .tc-card.tc-live { border-color:rgba(239,68,68,.5); background:rgba(239,68,68,.04); animation:cardglow 2.2s ease-in-out infinite; }
+    .tc-card.tc-done { opacity:.85; }
+    .tc-card.tc-upcoming { border-color:rgba(245,158,11,.25); }
+    @keyframes cardglow { 0%,100%{box-shadow:0 0 10px rgba(239,68,68,.1)} 50%{box-shadow:0 0 22px rgba(239,68,68,.28)} }
+    .tc-live-bar { display:flex; align-items:center; justify-content:center; gap:5px; background:rgba(239,68,68,.13); border-bottom:1px solid rgba(239,68,68,.2); padding:3px 8px; }
+    .tc-live-bar-txt { font-size:9px; font-weight:900; color:var(--red); text-transform:uppercase; letter-spacing:1.5px; }
+    .tc-live-clock { font-size:9px; color:var(--red); font-weight:700; }
+    .tc-body { display:flex; align-items:center; padding:8px 10px; gap:4px; }
+    .tc-team { display:flex; flex-direction:column; align-items:center; gap:2px; flex:1; min-width:0; }
+    .tc-flag { font-size:20px; line-height:1; }
+    .tc-code { font-size:11px; font-weight:800; color:#fff; letter-spacing:.3px; }
+    .tc-name { font-size:9px; color:var(--muted); text-align:center; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:60px; }
+    .tc-mid { display:flex; flex-direction:column; align-items:center; gap:2px; min-width:70px; flex-shrink:0; }
+    .tc-score { font-size:16px; font-weight:900; color:#fff; letter-spacing:2px; font-variant-numeric:tabular-nums; }
+    .tc-score.live { text-shadow:0 0 14px rgba(239,68,68,.6); }
+    .tc-ft { font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:.4px; }
+    .tc-vs { font-size:11px; font-weight:700; color:var(--muted); }
+    .tc-time { font-size:13px; font-weight:800; color:var(--amber); }
+    .tc-ko { font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:.3px; }
+    .tc-venue { text-align:center; font-size:9px; color:var(--dim); padding:0 8px 6px; }
+    .live-pill { display:inline-flex; align-items:center; padding:2px 7px; border-radius:20px; font-size:9px; font-weight:800; background:rgba(239,68,68,.2); border:1px solid rgba(239,68,68,.4); color:var(--red); letter-spacing:.5px; text-transform:uppercase; animation:livepulse 1.4s ease-in-out infinite; }
 
     .mc-score-box {
       display: flex; align-items: center; justify-content: center;
@@ -401,9 +426,14 @@
       .mc-col:last-child { border-top: 1px solid var(--border); }
       .mc-name { max-width: 60px; }
 
-      /* Today strip */
-      .mc-today-strip { padding: 10px 14px; }
-      .mc-today-mid { min-width: 74px; }
+      /* Today cards — mobile */
+      .tc-section { padding: 8px 12px 10px; }
+      .tc-cards { gap: 6px; }
+      .tc-card { min-width: 140px; }
+      .tc-flag { font-size: 18px; }
+      .tc-score { font-size: 14px; }
+      .tc-time { font-size: 12px; }
+      .tc-mid { min-width: 60px; }
       .mc-flag { font-size: 15px; }
       .mc-score { font-size: 13px; }
       .mc-time  { font-size: 11px; }
@@ -1943,59 +1973,49 @@ function MatchCenter({
   const TodayStrip = () => {
     const todayAll = matches.filter(m => m.dateOffset === 0).sort((a, b) => (a.eventDate || '').localeCompare(b.eventDate || ''));
     if (!todayAll.length) return null;
-    return /*#__PURE__*/React.createElement("div", {
-      className: "mc-today-strip"
-    }, /*#__PURE__*/React.createElement("span", {
-      className: "mc-today-strip-title"
-    }, "\uD83D\uDCC5 Today's Matches \xB7 Eastern Time"), todayAll.map((m, i) => /*#__PURE__*/React.createElement("div", {
-      key: i,
-      className: "mc-today-row"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "mc-today-team-cell"
-    }, /*#__PURE__*/React.createElement("span", {
-      className: "mc-flag",
-      style: {
-        fontSize: 16
-      }
-    }, FLAGS[m.hCode] || '🏳'), /*#__PURE__*/React.createElement("div", {
-      className: "mc-team-info"
-    }, /*#__PURE__*/React.createElement("span", {
-      className: "mc-code"
-    }, m.hCode), /*#__PURE__*/React.createElement("span", {
-      className: "mc-name"
-    }, m.hName))), /*#__PURE__*/React.createElement("div", {
-      className: "mc-today-mid"
-    }, m.isLive ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
-      className: "mc-score"
-    }, m.hScore, "\u2013", m.aScore), /*#__PURE__*/React.createElement("span", {
-      className: "live-pill"
-    }, "\u25CF LIVE", m.clock ? ' ' + m.clock + "'" : '')) : m.isCompleted ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
-      className: "mc-score"
-    }, m.hScore, "\u2013", m.aScore), /*#__PURE__*/React.createElement("span", {
-      className: "mc-today-ft"
-    }, "FT \xB7 ", fmtTime(m.eventDate))) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
-      className: "mc-time"
-    }, fmtTime(m.eventDate)), /*#__PURE__*/React.createElement("span", {
-      className: "mc-today-ko"
-    }, "kick off")), m.venue && /*#__PURE__*/React.createElement("span", {
-      className: "mc-today-venue"
-    }, "\uD83D\uDCCD ", m.venue)), /*#__PURE__*/React.createElement("div", {
-      className: "mc-today-team-cell r"
-    }, /*#__PURE__*/React.createElement("span", {
-      className: "mc-flag",
-      style: {
-        fontSize: 16
-      }
-    }, FLAGS[m.aCode] || '🏳'), /*#__PURE__*/React.createElement("div", {
-      className: "mc-team-info",
-      style: {
-        alignItems: 'flex-end'
-      }
-    }, /*#__PURE__*/React.createElement("span", {
-      className: "mc-code"
-    }, m.aCode), /*#__PURE__*/React.createElement("span", {
-      className: "mc-name"
-    }, m.aName))))));
+    const dateLabel = new Date().toLocaleDateString('en-US', {weekday:'short',month:'short',day:'numeric'}).toUpperCase();
+    return /*#__PURE__*/React.createElement("div", {className:"tc-section"},
+      /*#__PURE__*/React.createElement("div", {className:"tc-header"},
+        /*#__PURE__*/React.createElement("span", null, "⚽"),
+        /*#__PURE__*/React.createElement("span", {className:"tc-header-label"}, "Today's Matches"),
+        /*#__PURE__*/React.createElement("span", {className:"tc-header-date"}, dateLabel, " · ET")
+      ),
+      /*#__PURE__*/React.createElement("div", {className:"tc-cards"},
+        todayAll.map((m, i) => {
+          const cardCls = "tc-card " + (m.isLive ? "tc-live" : m.isCompleted ? "tc-done" : "tc-upcoming");
+          return /*#__PURE__*/React.createElement("div", {key:i, className:cardCls},
+            m.isLive && /*#__PURE__*/React.createElement("div", {className:"tc-live-bar"},
+              /*#__PURE__*/React.createElement("span", {className:"live-dot"}),
+              /*#__PURE__*/React.createElement("span", {className:"tc-live-bar-txt"}, "Live"),
+              m.clock && /*#__PURE__*/React.createElement("span", {className:"tc-live-clock"}, m.clock, "'")
+            ),
+            /*#__PURE__*/React.createElement("div", {className:"tc-body"},
+              /*#__PURE__*/React.createElement("div", {className:"tc-team"},
+                /*#__PURE__*/React.createElement("span", {className:"tc-flag"}, FLAGS[m.hCode] || "🏳"),
+                /*#__PURE__*/React.createElement("span", {className:"tc-code"}, m.hCode),
+                /*#__PURE__*/React.createElement("span", {className:"tc-name"}, m.hName)
+              ),
+              /*#__PURE__*/React.createElement("div", {className:"tc-mid"},
+                (m.isLive || m.isCompleted) ? /*#__PURE__*/React.createElement(React.Fragment, null,
+                  /*#__PURE__*/React.createElement("span", {className:"tc-score" + (m.isLive ? " live" : "")}, m.hScore, " - ", m.aScore),
+                  m.isCompleted && /*#__PURE__*/React.createElement("span", {className:"tc-ft"}, "FT")
+                ) : /*#__PURE__*/React.createElement(React.Fragment, null,
+                  /*#__PURE__*/React.createElement("span", {className:"tc-vs"}, "VS"),
+                  /*#__PURE__*/React.createElement("span", {className:"tc-time"}, fmtTime(m.eventDate)),
+                  /*#__PURE__*/React.createElement("span", {className:"tc-ko"}, "kick off")
+                )
+              ),
+              /*#__PURE__*/React.createElement("div", {className:"tc-team"},
+                /*#__PURE__*/React.createElement("span", {className:"tc-flag"}, FLAGS[m.aCode] || "🏳"),
+                /*#__PURE__*/React.createElement("span", {className:"tc-code"}, m.aCode),
+                /*#__PURE__*/React.createElement("span", {className:"tc-name"}, m.aName)
+              )
+            ),
+            m.venue && /*#__PURE__*/React.createElement("div", {className:"tc-venue"}, "📍 ", m.venue)
+          );
+        })
+      )
+    );
   };
   if (loading) {
     return /*#__PURE__*/React.createElement("div", {
