@@ -2652,6 +2652,40 @@ function App() {
 ReactDOM.createRoot(document.getElementById('root')).render(/*#__PURE__*/React.createElement(App, null));
 </script>
 <script>
+(function() {
+  const ball = document.createElement('div');
+  ball.style.cssText = [
+    'position:fixed', 'width:36px', 'height:36px', 'font-size:30px',
+    'line-height:36px', 'text-align:center', 'pointer-events:none',
+    'z-index:9999', 'user-select:none', 'opacity:0.45',
+    'filter:drop-shadow(0 2px 6px rgba(0,0,0,.5))', 'will-change:transform'
+  ].join(';');
+  ball.textContent = '⚽';
+  document.body.appendChild(ball);
+
+  let x = Math.random() * (window.innerWidth  - 36);
+  let y = Math.random() * (window.innerHeight - 36);
+  let vx = (2.5 + Math.random() * 1.5) * (Math.random() < .5 ? 1 : -1);
+  let vy = (2   + Math.random() * 1.5) * (Math.random() < .5 ? 1 : -1);
+  let rot = 0;
+
+  function tick() {
+    x += vx; y += vy;
+    rot += vx * 1.8;
+    const W = window.innerWidth - 36, H = window.innerHeight - 36;
+    if (x <= 0)  { x = 0;  vx =  Math.abs(vx); }
+    if (x >= W)  { x = W;  vx = -Math.abs(vx); }
+    if (y <= 0)  { y = 0;  vy =  Math.abs(vy); }
+    if (y >= H)  { y = H;  vy = -Math.abs(vy); }
+    ball.style.left      = x + 'px';
+    ball.style.top       = y + 'px';
+    ball.style.transform = 'rotate(' + rot + 'deg)';
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+<script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/fifa/sw.js')
