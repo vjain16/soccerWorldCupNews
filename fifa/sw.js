@@ -1,3 +1,4 @@
+// @ts-nocheck
 const CACHE = 'wc2026-v1';
 const ASSETS = [
   '/fifa/',
@@ -29,8 +30,11 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
 
-  // Always fetch live ESPN API from network — never cache
+  // Always pass through to network: ESPN API, Google Analytics, third-party scripts
   if (url.hostname.includes('espn.com')) return;
+  if (url.hostname.includes('google-analytics.com')) return;
+  if (url.hostname.includes('googletagmanager.com')) return;
+  if (url.hostname.includes('doubleclick.net')) return;
 
   // HTML: network first, fall back to cache
   if (e.request.destination === 'document' || url.pathname.endsWith('.html') || url.pathname.endsWith('/')) {
